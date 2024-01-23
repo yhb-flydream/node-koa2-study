@@ -12,15 +12,4 @@ module.exports = app => {
 
   app._controller = controller
   console.log('controller2 :>> ', 'init')
-
-  return async (ctx, next) => {
-    try {
-      console.log('controller2 :>> ', 'next before')
-      await next()
-      console.log('controller2 :>> ', 'next after')
-    } catch (error) {
-      console.error('controller2 error :>> ', error)
-      ctx._errorHandler(error)
-    }
-  }
 }

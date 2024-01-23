@@ -12,15 +12,4 @@ module.exports = app => {
 
   app.context._service = service
   console.log('service2 :>> ', 'init')
-
-  return async (ctx, next) => {
-    try {
-      console.log('service2 :>> ', 'next before')
-      await next()
-      console.log('service2 :>> ', 'next after')
-    } catch (error) {
-      console.error('service2 error :>> ', error)
-      ctx._errorHandler(error)
-    }
-  }
 }

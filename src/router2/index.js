@@ -13,15 +13,4 @@ module.exports = app => {
   })
   app.use(app._router.routes()).use(app._router.allowedMethods())
   console.log('router2 :>> ', 'init')
-
-  return async (ctx, next) => {
-    try {
-      console.log('router2 :>> ', 'next before')
-      await next()
-      console.log('router2 :>> ', 'next after')
-    } catch (error) {
-      console.error('router2 error :>> ', error)
-      ctx._errorHandler(error)
-    }
-  }
 }

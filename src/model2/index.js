@@ -40,15 +40,4 @@ function initModels(sequelize) {
 module.exports = app => {
   app._model = initModels(seq)
   console.log('model2 :>> ', 'init')
-
-  return async (ctx, next) => {
-    try {
-      console.log('model2 :>> ', 'next before')
-      await next()
-      console.log('model2 :>> ', 'next after')
-    } catch (error) {
-      console.error('model2 error :>> ', error)
-      ctx._errorHandler(error)
-    }
-  }
 }
