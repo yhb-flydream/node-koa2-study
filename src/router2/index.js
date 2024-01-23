@@ -1,13 +1,10 @@
+const Router = require('koa-router')
+const router = new Router()
+
 const fs = require('fs')
 
 module.exports = app => {
-  // fs.readdirSync(__dirname).forEach(file => {
-  //   if (file !== 'index.js') {
-  //     let r = require(`./${file}`)(app)
-  //     router.use(r.routes())
-  //   }
-  // })
-  // app.use(router.routes()).use(router.allowedMethods())
+  app._router = router
 
   fs.readdirSync(__dirname).forEach(file => {
     if (file !== 'index.js') {
@@ -23,7 +20,7 @@ module.exports = app => {
       await next()
       console.log('router2 :>> ', 'next after')
     } catch (error) {
-      console.error('router error :>> ', error)
+      console.error('router2 error :>> ', error)
       ctx._errorHandler(error)
     }
   }
