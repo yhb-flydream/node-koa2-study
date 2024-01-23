@@ -1,8 +1,7 @@
-const { create, findAll, update, remove, setDefault } = require('../controller/addr.controller')
-
 module.exports = app => {
   const router = app._router
   const middleware = app._middleware
+  const controller = app._controller
   // router.prefix('/address')
 
   // 添加地址
@@ -17,11 +16,11 @@ module.exports = app => {
       },
       address: 'string',
     }),
-    create
+    controller.address.create
   )
 
   // 地址列表
-  router.get('/address/list', middleware.auth.auth, findAll)
+  router.get('/address/list', middleware.auth.auth, controller.address.findAll)
 
   // 更新地址
   router.put(
@@ -35,12 +34,12 @@ module.exports = app => {
       },
       address: 'string',
     }),
-    update
+    controller.address.update
   )
 
   // 删除地址
-  router.delete('/address/del/:id', middleware.auth.auth, remove)
+  router.delete('/address/del/:id', middleware.auth.auth, controller.address.remove)
 
   // 设置默认地址
-  router.patch('/address/default/:id', middleware.auth.auth, setDefault)
+  router.patch('/address/default/:id', middleware.auth.auth, controller.address.setDefault)
 }
