@@ -1,5 +1,3 @@
-const path = require('path')
-
 const { fileUploadError, goodsCreateError, goodsIdError, goodsUpdateError, goodsRemoveError, goodsRestoreError } = require('../constant/err.type')
 
 class GoodsController {
