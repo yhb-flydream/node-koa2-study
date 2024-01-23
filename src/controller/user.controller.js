@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 
 const { createUser, getUserInfo, updateUserInfo } = require('../service/user.service')
 const { userRegisterError, userLoginError, userPatchPasswordError } = require('../constant/err.type')
-const { JWT_SECRET } = require('../config/config.default')
 
 class UserController {
   async register(ctx, next) {
@@ -21,7 +20,7 @@ class UserController {
     const { user_name } = ctx.request.body
     try {
       const { password, ...info } = await getUserInfo({ user_name })
-      ctx._successHandler({ token: jwt.sign(info, JWT_SECRET, { expiresIn: '1d' }) })
+      ctx._successHandler({ token: jwt.sign(info, ctx._config.JWT_SECRET, { expiresIn: '1d' }) })
     } catch (error) {
       console.error('login error :>> ', error)
       return ctx._errorHandler(userLoginError)

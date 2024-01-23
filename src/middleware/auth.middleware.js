@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-const { JWT_SECRET } = require('../config/config.default')
 const { tokenExpiredError, tokenInvalid, hasNotAdminPermission } = require('../constant/err.type')
 
 const auth = async (ctx, next) => {
@@ -9,7 +8,7 @@ const auth = async (ctx, next) => {
   // console.log('token :>> ', token)
 
   try {
-    const user = jwt.verify(token, JWT_SECRET)
+    const user = jwt.verify(token, ctx._config.JWT_SECRET)
     ctx.state.user = user
   } catch (error) {
     switch (error.name) {
