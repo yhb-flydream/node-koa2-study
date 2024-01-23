@@ -12,6 +12,7 @@ const configHandler = require('./configHandler')
 /* 1: use router */
 
 /* 2: use router */
+const middleware2 = require('../middleware2')
 const routerHandler = require('./routerHandler')
 const router2 = require('../router2')
 /* 2: use router */
@@ -40,6 +41,7 @@ app.use(configHandler(app))
 /* 1: use router */
 
 /* 2: use router */
+app.use(middleware2(app))
 app.use(routerHandler(app))
 app.use(router2(app))
 /* 2: use router */

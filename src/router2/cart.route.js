@@ -1,23 +1,21 @@
-const { auth } = require('../middleware/auth.middleware')
-const { validator } = require('../middleware/cart.middleware')
-
 const { add, findAll, update, remove, selectAll, unSelectAll, toggleSelectAll, count } = require('../controller/cart.controller')
 
 module.exports = app => {
   const router = app._router
+  const middleware = app._middleware
   // router.prefix('/carts')
 
   // 加入购物车
-  router.post('/carts/add', auth, validator({ goods_id: 'number' }), add)
+  router.post('/carts/add', middleware.auth.auth, middleware.carts.validator({ goods_id: 'number' }), add)
 
   // 获取购物车列表
-  router.get('/carts/list', auth, findAll)
+  router.get('/carts/list', middleware.auth.auth, findAll)
 
   // 更新购物车
   router.patch(
     '/carts/update/:id',
-    auth,
-    validator({
+    middleware.auth.auth,
+    middleware.carts.validator({
       number: {
         type: 'number',
         required: false,
@@ -33,18 +31,18 @@ module.exports = app => {
   // 删除商品
   router.delete(
     '/carts/del/:id',
-    auth,
-    validator({
+    middleware.auth.auth,
+    middleware.carts.validator({
       ids: { type: 'array', required: false },
     }),
     remove
   )
 
   // 全选/取消全选
-  router.post('/carts/selectAll', auth, selectAll)
-  router.post('/carts/unSelectAll', auth, unSelectAll)
-  router.post('/carts/toggleSelectAll', auth, validator({ selected: 'bool' }), toggleSelectAll)
+  router.post('/carts/selectAll', middleware.auth.auth, selectAll)
+  router.post('/carts/unSelectAll', middleware.auth.auth, unSelectAll)
+  router.post('/carts/toggleSelectAll', middleware.auth.auth, middleware.carts.validator({ selected: 'bool' }), toggleSelectAll)
 
   // 购物车总数
-  router.get('/carts/count', auth, count)
+  router.get('/carts/count', middleware.auth.auth, count)
 }

@@ -1,17 +1,15 @@
-const { auth } = require('../middleware/auth.middleware')
-const { validator } = require('../middleware/addr.middleware')
-
 const { create, findAll, update, remove, setDefault } = require('../controller/addr.controller')
 
 module.exports = app => {
   const router = app._router
+  const middleware = app._middleware
   // router.prefix('/address')
 
   // 添加地址
   router.post(
     '/address/add',
-    auth,
-    validator({
+    middleware.auth.auth,
+    middleware.address.validator({
       consignee: 'string',
       phone: {
         type: 'string',
@@ -23,13 +21,13 @@ module.exports = app => {
   )
 
   // 地址列表
-  router.get('/address/list', auth, findAll)
+  router.get('/address/list', middleware.auth.auth, findAll)
 
   // 更新地址
   router.put(
     '/address/update/:id',
-    auth,
-    validator({
+    middleware.auth.auth,
+    middleware.address.validator({
       consignee: 'string',
       phone: {
         type: 'string',
@@ -41,8 +39,8 @@ module.exports = app => {
   )
 
   // 删除地址
-  router.delete('/address/del/:id', auth, remove)
+  router.delete('/address/del/:id', middleware.auth.auth, remove)
 
   // 设置默认地址
-  router.patch('/address/default/:id', auth, setDefault)
+  router.patch('/address/default/:id', middleware.auth.auth, setDefault)
 }
