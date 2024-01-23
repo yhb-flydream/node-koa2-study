@@ -2,18 +2,18 @@ const { DataTypes } = require('sequelize')
 
 const seq = require('../db/seq')
 
-const _Addr = require('./addr.model')
-const _Carts = require('./cart.model')
+const _Address = require('./address.model')
+const _Carts = require('./carts.model')
 const _Goods = require('./goods.model')
-const _Order = require('./order.model')
-const _User = require('./user.model')
+const _Orders = require('./orders.model')
+const _Users = require('./users.model')
 
 function initModels(sequelize) {
-  const Addr = _Addr(sequelize, DataTypes)
+  const Address = _Address(sequelize, DataTypes)
   const Carts = _Carts(sequelize, DataTypes)
   const Goods = _Goods(sequelize, DataTypes)
-  const Order = _Order(sequelize, DataTypes)
-  const User = _User(sequelize, DataTypes)
+  const Orders = _Orders(sequelize, DataTypes)
+  const Users = _Users(sequelize, DataTypes)
 
   // 创建数据表，如果数据表已经存在，则删除后再重新创建，为避免重新创建，初始运行之后即可把代码注释掉
   // Addr.sync({ force: true })
@@ -29,12 +29,28 @@ function initModels(sequelize) {
   })
 
   return {
-    Addr,
+    Address,
     Carts,
     Goods,
-    Order,
-    User,
+    Orders,
+    Users,
   }
 }
 
 module.exports = initModels(seq)
+
+module.exports = app => {
+  app._model = initModels(seq)
+  console.log('model2 :>> ', 'init')
+
+  return async (ctx, next) => {
+    try {
+      console.log('model2 :>> ', 'next before')
+      await next()
+      console.log('model2 :>> ', 'next after')
+    } catch (error) {
+      console.error('model2 error :>> ', error)
+      ctx._errorHandler(error)
+    }
+  }
+}

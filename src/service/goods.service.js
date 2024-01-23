@@ -1,7 +1,4 @@
-// 使用方式 1 导入 model
-// const Goods = require('../model/goods.model')
-// 使用方式 2 导入 model
-const { Goods } = require('../model2')
+const Goods = require('../model/goods.model')
 
 class GoodsService {
   async createGoods(goods) {
