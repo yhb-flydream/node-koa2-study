@@ -1,7 +1,6 @@
 const path = require('path')
 
 const { fileUploadError, goodsCreateError, goodsIdError, goodsUpdateError, goodsRemoveError, goodsRestoreError } = require('../constant/err.type')
-const { createGoods, updateGoods, removeGoods, restoreGoods, findGoods } = require('../service/goods.service')
 
 class GoodsController {
   async upload(ctx, next) {
@@ -12,7 +11,7 @@ class GoodsController {
   }
   async create(ctx, next) {
     try {
-      const { createdAt, updatedAt, ...res } = await createGoods(ctx.request.body)
+      const { createdAt, updatedAt, ...res } = await ctx._service.goods.createGoods(ctx.request.body)
       ctx._successHandler(res)
     } catch (error) {
       console.error('create error :>> ', error)
@@ -21,7 +20,7 @@ class GoodsController {
   }
   async update(ctx, next) {
     try {
-      const res = await updateGoods({ ...ctx.request.body, id: ctx.params.id })
+      const res = await ctx._service.goods.updateGoods({ ...ctx.request.body, id: ctx.params.id })
       if (!res) return ctx._errorHandler(goodsIdError)
       ctx._successHandler()
     } catch (error) {
@@ -31,7 +30,7 @@ class GoodsController {
   }
   async remove(ctx, next) {
     try {
-      const res = await removeGoods(ctx.params.id)
+      const res = await ctx._service.goods.removeGoods(ctx.params.id)
       if (!res) return ctx._errorHandler(goodsIdError)
       ctx._successHandler()
     } catch (error) {
@@ -41,7 +40,7 @@ class GoodsController {
   }
   async restore(ctx, next) {
     try {
-      const res = await restoreGoods(ctx.params.id)
+      const res = await ctx._service.goods.restoreGoods(ctx.params.id)
       if (!res) return ctx._errorHandler(goodsIdError)
       ctx._successHandler()
     } catch (error) {
@@ -51,7 +50,7 @@ class GoodsController {
   }
   async findAll(ctx, next) {
     const { pageNum = 1, pageSize = 10 } = ctx.request.query
-    const res = await findGoods(pageNum, pageSize)
+    const res = await ctx._service.goods.findGoods(pageNum, pageSize)
     ctx._successHandler(res)
   }
 }

@@ -16,11 +16,11 @@ function initModels(sequelize) {
   const Users = _Users(sequelize, DataTypes)
 
   // 创建数据表，如果数据表已经存在，则删除后再重新创建，为避免重新创建，初始运行之后即可把代码注释掉
-  // Addr.sync({ force: true })
+  // Address.sync({ force: true })
   // Carts.sync({ force: true })
   // Goods.sync({ force: true })
-  // Order.sync({ force: true })
-  // User.sync({ force: true })
+  // Orders.sync({ force: true })
+  // Users.sync({ force: true })
 
   // 关联数据表
   Carts.belongsTo(Goods, {
@@ -36,8 +36,6 @@ function initModels(sequelize) {
     Users,
   }
 }
-
-module.exports = initModels(seq)
 
 module.exports = app => {
   app._model = initModels(seq)
