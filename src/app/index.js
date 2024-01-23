@@ -4,9 +4,18 @@ const { koaBody } = require('koa-body')
 const koaStatic = require('koa-static')
 const parameter = require('koa-parameter')
 
-const configHandler = require('./configHandler')
 const operationHandler = require('./operationHandler')
-const router = require('../router')
+const configHandler = require('./configHandler')
+
+/* 1: use router */
+// const router = require('../router')
+/* 1: use router */
+
+/* 2: use router */
+const routerHandler = require('./routerHandler')
+const router2 = require('../router2')
+/* 2: use router */
+
 const errHandler = require('./errHandler')
 
 const app = new Koa()
@@ -25,7 +34,15 @@ app.use(koaStatic(path.join(__dirname, '../uploads')))
 app.use(parameter(app))
 app.use(operationHandler(app))
 app.use(configHandler(app))
-app.use(router.routes()).use(router.allowedMethods())
+
+/* 1: use router */
+// app.use(router.routes()).use(router.allowedMethods())
+/* 1: use router */
+
+/* 2: use router */
+app.use(routerHandler(app))
+app.use(router2(app))
+/* 2: use router */
 
 app.on('error', errHandler)
 
