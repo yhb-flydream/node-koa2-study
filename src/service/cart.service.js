@@ -23,7 +23,8 @@ class CartsService {
         return await Carts.create({ user_id, goods_id })
       }
     } catch (error) {
-      ctx.app.emit('error', cartsAddError, ctx)
+      console.error('createOrUpdate error :>> ', error)
+      ctx._errorHandler(cartsAddError)
     }
   }
   async findCarts(pageNum, pageSize) {

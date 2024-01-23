@@ -15,10 +15,10 @@ const auth = async (ctx, next) => {
     switch (error.name) {
       case 'TokenExpiredError':
         console.error('token 过期 :>> ', error)
-        return ctx.app.emit('error', tokenExpiredError, ctx)
+        return ctx._errorHandler(tokenExpiredError)
       case 'JsonWebTokenError':
         console.error('token 无效 :>> ', error)
-        return ctx.app.emit('error', tokenInvalid, ctx)
+        return ctx._errorHandler(tokenInvalid)
     }
   }
   await next()
@@ -28,7 +28,7 @@ const hadAdminPermission = async (ctx, next) => {
   const { is_admin } = ctx.state.user
   if (!is_admin) {
     console.log('is_admin :>> ', ctx.state.user);
-    return ctx.app.emit('error', hasNotAdminPermission, ctx)
+    return ctx._errorHandler(hasNotAdminPermission)
   }
   await next()
 }

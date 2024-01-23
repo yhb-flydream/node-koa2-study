@@ -4,7 +4,8 @@ const validator = rule => async (ctx, next) => {
   try {
     await ctx.verifyParams(rule)
   } catch (error) {
-    return ctx.app.emit('error', { ...orderFormatError, data: error }, ctx)
+    console.error('validator error :>> ', error)
+    return ctx._errorHandler({ ...orderFormatError, data: error })
   }
   await next()
 }

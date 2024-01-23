@@ -7,87 +7,52 @@ class GoodsController {
   async upload(ctx, next) {
     // console.log('ctx :>> ', ctx.request.files.file)
     const { file } = ctx.request.files
-    if (file) {
-      ctx.body = {
-        code: 0,
-        msg: 'success',
-        data: {
-          url: file.newFilename,
-        },
-      }
-    } else {
-      ctx.app.emit('error', fileUploadError, ctx)
-    }
-    // ctx.body = ctx.request.files
+    if (!file) return ctx._errorHandler(fileUploadError)
+    ctx._successHandler({ url: file.newFilename })
   }
   async create(ctx, next) {
     try {
       const { createdAt, updatedAt, ...res } = await createGoods(ctx.request.body)
-      ctx.body = {
-        code: 0,
-        msg: 'success',
-        data: res,
-      }
+      ctx._successHandler(res)
     } catch (error) {
-      ctx.app.emit('error', goodsCreateError, ctx)
+      console.error('create error :>> ', error)
+      ctx._errorHandler(goodsCreateError)
     }
   }
   async update(ctx, next) {
     try {
       const res = await updateGoods({ ...ctx.request.body, id: ctx.params.id })
-      if (res) {
-        ctx.body = {
-          code: 0,
-          msg: 'success',
-          data: '',
-        }
-      } else {
-        ctx.app.emit('error', goodsIdError, ctx)
-      }
+      if (!res) return ctx._errorHandler(goodsIdError)
+      ctx._successHandler()
     } catch (error) {
-      ctx.app.emit('error', goodsUpdateError, ctx)
+      console.error('update error :>> ', error)
+      ctx._errorHandler(goodsUpdateError)
     }
   }
   async remove(ctx, next) {
     try {
       const res = await removeGoods(ctx.params.id)
-      if (res) {
-        ctx.body = {
-          code: 0,
-          msg: 'success',
-          data: '',
-        }
-      } else {
-        ctx.app.emit('error', goodsIdError, ctx)
-      }
+      if (!res) return ctx._errorHandler(goodsIdError)
+      ctx._successHandler()
     } catch (error) {
-      ctx.app.emit('error', goodsRemoveError, ctx)
+      console.error('remove error :>> ', error)
+      ctx._errorHandler(goodsRemoveError)
     }
   }
   async restore(ctx, next) {
     try {
       const res = await restoreGoods(ctx.params.id)
-      if (res) {
-        ctx.body = {
-          code: 0,
-          msg: 'success',
-          data: '',
-        }
-      } else {
-        ctx.app.emit('error', goodsIdError, ctx)
-      }
+      if (!res) return ctx._errorHandler(goodsIdError)
+      ctx._successHandler()
     } catch (error) {
-      ctx.app.emit('error', goodsRestoreError, ctx)
+      console.error('restore error :>> ', error)
+      ctx._errorHandler(goodsRestoreError)
     }
   }
   async findAll(ctx, next) {
     const { pageNum = 1, pageSize = 10 } = ctx.request.query
     const res = await findGoods(pageNum, pageSize)
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      data: res,
-    }
+    ctx._successHandler(res)
   }
 }
 

@@ -9,9 +9,9 @@ const validator = async (ctx, next) => {
       goods_img: { type: 'string', required: true },
     })
   } catch (error) {
-    console.log('error :>> ', error)
+    console.error('validator error :>> ', error)
     goodsFormatError.data = error
-    return ctx.app.emit('error', goodsFormatError, ctx)
+    return ctx._errorHandler(goodsFormatError)
   }
   await next()
 }
