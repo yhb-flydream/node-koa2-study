@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs')
-const { getUserInfo } = require('../service/user.service')
 const {
   userFormateError,
   userAlreadyExists,
@@ -24,7 +23,7 @@ const userValidator = async (ctx, next) => {
 const verifyUser = async (ctx, next) => {
   const { user_name } = ctx.request.body
   try {
-    const info = await getUserInfo({ user_name })
+    const info = await ctx._service.users.getUserInfo({ user_name })
     if (info) {
       console.log('verifyUser :>> ', { user_name })
       return ctx._errorHandler(userAlreadyExists)
@@ -50,7 +49,7 @@ const verifyLogin = async (ctx, next) => {
   const { user_name, password } = ctx.request.body
   let info = null
   try {
-    info = await getUserInfo({ user_name })
+    info = await ctx._service.users.getUserInfo({ user_name })
     if (!info) {
       console.log('verifyLogin :>> ', { user_name })
       return ctx._errorHandler(userNotExistsError)
@@ -73,7 +72,7 @@ const verifyPassword = async (ctx, next) => {
   const { user_name } = ctx.state.user
   let info = null
   try {
-    info = await getUserInfo({ user_name })
+    info = await ctx._service.users.getUserInfo({ user_name })
     if (!info) {
       return ctx._errorHandler(userNotExistsError)
     }
